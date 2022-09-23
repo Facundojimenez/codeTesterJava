@@ -1,0 +1,25 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+font-family: "Lato", sans-serif;
+color: #000000;
+}
+
+body {
+background-color: #B0E6FD;
+width: 100%;
+}
+
+.mainContainer{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.appContainer{
+    background-color: #fff;
+}
