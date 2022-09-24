@@ -2,16 +2,13 @@
   <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <link rel="stylesheet" href="styles/styles.css">
-    <style>
-      textarea {
-        overflow-y: scroll;
-        resize: none;
-      }
-      .tab {
-        position: sticky;
-        left: 250px;
-      }
-    </style>
+    <link rel="stylesheet" href="/path/to/styles/default.min.css">
+    
+    <script src="codemirror-5.65.9/lib/codemirror.js"></script>
+    <script src="codemirror-5.65.9/mode/clike/clike.js"></script>
+    <link rel="stylesheet" href="codemirror-5.65.9/lib/codemirror.css">
+    <link rel="stylesheet" href="codemirror-5.65.9/theme/monokai.css">
+    
   </head>
   <body>
     <div class="container mainContainer">
@@ -39,26 +36,36 @@
                 <input class="tab" id="volumen" disabled="" /><br />
                 <label>Operadores Halstead</label>
                 <textarea rows="5" cols="25" class="tab" id="operadores"></textarea><br />
-        
-    
     
               <script>
                 /* Consideraciones:
-            Las lineas de codigo totales OK.
-            Las lineas de codigo comentadas, cuentan solo comentarios simples.
-            Complejidad ciclomatica, cuenta la cantidad de IF, ELSE, FOR, WHILE, && y || que aparecen en el codigo.
-            Los operadores se pueden agregar o eliminar a gusto.
-            Para Halstead Longitud y Volumen ver: https://en.wikipedia.org/wiki/Halstead_complexity_measures
-            */
+                    Las lineas de codigo totales OK.
+                    Las lineas de codigo comentadas, cuentan solo comentarios simples.
+                    Complejidad ciclomatica, cuenta la cantidad de IF, ELSE, FOR, WHILE, && y || que aparecen en el codigo.
+                    Los operadores se pueden agregar o eliminar a gusto.
+                    Para Halstead Longitud y Volumen ver: https://en.wikipedia.org/wiki/Halstead_complexity_measures
+                */
+
                 document.getElementById("operadores").value =
                   "+, -, /, *, int, double, float, ;, :, public, static, void, &&, ||, <=, >=, <, >";
+
+                ///-------------Inicializacion del editor--------
+                var editor = CodeMirror.fromTextArea(document.getElementById("codigo"), {
+                  lineNumbers: true,
+                  matchBrackets: true,
+                  mode: "text/x-java",
+                  theme: "monokai"
+                });
+                // ------------------------------------------
+
                 function mostrarMetricas() {
                   if (document.getElementById("operadores").value.length == 0) {
                     alert("Los operadores no pueden quedar vacios");
                     return;
                   }
-        
-                  var codigoRaw = document.getElementById("codigo").value;
+                  
+                  // var codigoRaw = document.getElementById("codigo").value;         
+                  var codigoRaw = editor.getValue(); // Esto lo cambié yo para que funcione con la libreria de código - F
                   if (codigoRaw.length == 0) {
                     alert("Ingrese un codigo por favor");
                     return;
@@ -94,9 +101,12 @@
                     complejidad_ciclomatica;
                   document.getElementById("longitud").value = longitudHalstead;
                   document.getElementById("volumen").value = volumenHalstead;
-                  if (complejidad_ciclomatica < 11)
-                    alert("No es necesario modularizar el codigo");
-                  else alert("Se recomienda modularizar el programa");
+                  
+                  ///esto me parece malardo
+                  // if (complejidad_ciclomatica < 11)
+                  //   alert("No es necesario modularizar el codigo");
+                  // else
+                  //  alert("Se recomienda modularizar el programa");
                 }
         
                 function complejidadCiclomatica(texto) {
@@ -120,7 +130,7 @@
                   var cantidadOperandosTotales = 0;
                   var cantidadOperadoresUnicos = 0;
                   var cantidadOperandosUnicos = 0;
-                  //var operadores = ["+", "-", "/", "*", "int", "double", "float", ";", ":", "public", "static", "void", "&&", "||", "<=", ">=", "<", ">"];
+                  var operadores = ["+", "-", "/", "*", "int", "double", "float", ";", ":", "public", "static", "void", "&&", "||", "<=", ">=", "<", ">"];
                   var operadores = document
                     .getElementById("operadores")
                     .value.split(",");
@@ -162,6 +172,8 @@
                   return [longitudHalstead, volumenHalstead];
                 }
               </script>
+
+              
             </div>
         </div>
     </div>
