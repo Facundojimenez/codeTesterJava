@@ -119,7 +119,7 @@
 				var porcentaje_lineas_comentadas =
 					parseFloat(
 						(parseInt(lineas_comentarios_simples) /
-							parseInt(lineas_del_archivo)) *
+							parseInt(lineas_del_archivo + 1)) *
 							100
 					).toFixed(2) + "%";
 				if (!isNaN(porcentaje_lineas_comentadas))
