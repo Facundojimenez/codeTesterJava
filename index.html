@@ -66,6 +66,12 @@
 						<input class="tab" id="volumen" disabled="" />
 					</div>
 					<div class="col-3">
+						<label>Fan in</label>
+					</div>
+					<div class="col-3">
+						<input class="tab" id="fan_in" disabled="" />
+					</div>
+					<div class="col-3">
 						<label>Operadores Halstead</label>
 					</div>
 					<div class="col-">
@@ -125,6 +131,7 @@
 				if (!isNaN(porcentaje_lineas_comentadas))
 					porcentaje_lineas_comentadas = 0 + "%";
 				var complejidad_ciclomatica = complejidadCiclomatica(codigoRaw);
+				var fan_in = getFanIn(codigoRaw,"esvalido"); //Cambiar por variable
 				var halstead = halsteadMetodo(codigoRaw);
 				var longitudHalstead = halstead[0];
 				var volumenHalstead = halstead[1];
@@ -140,12 +147,17 @@
 					complejidad_ciclomatica;
 				document.getElementById("longitud").value = longitudHalstead;
 				document.getElementById("volumen").value = volumenHalstead;
+				document.getElementById("fan_in").value = fan_in;
 				
 				///esto me parece malardo
 				// if (complejidad_ciclomatica < 11)
 				//   alert("No es necesario modularizar el codigo");
 				// else
 				//  alert("Se recomienda modularizar el programa");
+			}
+
+			function getFanIn(texto, methodName) {
+				return [...texto.matchAll("[^[A-Za-z]"+methodName+"*\\(")].length;
 			}
 
 			function complejidadCiclomatica(texto) {
