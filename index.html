@@ -72,6 +72,13 @@
 						<input class="tab" id="fan_in" disabled="" />
 					</div>
 					<div class="col-3">
+						<label>Metodos</label>
+					</div>
+					<div class="col-3">
+						<select style="width:200px" id="methods_names" >
+						</select>
+					</div>
+					<div class="col-3">
 						<label>Operadores Halstead</label>
 					</div>
 					<div class="col-">
@@ -102,6 +109,8 @@
 				theme: "monokai"
 			});
 			// ------------------------------------------
+
+			var reservedNames = ["if", "while", "for", "do", "else", "switch"];
 
 			function mostrarMetricas() {
 				if (document.getElementById("operadores").value.length == 0) {
@@ -148,6 +157,8 @@
 				document.getElementById("longitud").value = longitudHalstead;
 				document.getElementById("volumen").value = volumenHalstead;
 				document.getElementById("fan_in").value = fan_in;
+				loadSelect(document.getElementById("methods_names"), getMethodsNames(codigoRaw));
+				console.log(getMethodsNames(codigoRaw));
 				
 				///esto me parece malardo
 				// if (complejidad_ciclomatica < 11)
@@ -156,8 +167,23 @@
 				//  alert("Se recomienda modularizar el programa");
 			}
 
-			function getFanIn(texto, methodName) {
-				return [...texto.matchAll("[^[A-Za-z]"+methodName+"*\\(")].length;
+			function loadSelect(select, options) {
+				for (const option in options) {
+					var optiondos = document.createElement("option");
+					optiondos.text = options[option];
+					optiondos.value = options[option];
+					select.appendChild(optiondos);
+				}
+			}
+
+			function getFanIn(code, methodName) {
+				return [...code.matchAll("[^[A-Za-z]"+methodName+"*\\(")].length;
+			}
+
+			function getMethodsNames(code){
+				var regex = "[^\\)\\(\\{\\}\\t]+\\s([a-zA-Z][a-zA-Z0-9]*)\\s*\\(\\s*([^\\(\\)]*)\\)\\s*([^\\(\\)\\{\\};]*)\\s*\\{";
+				var methodsNames = code.match(regex);
+				return [...methodsNames];
 			}
 
 			function complejidadCiclomatica(texto) {
