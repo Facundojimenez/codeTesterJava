@@ -103,7 +103,7 @@ function getMethods(code) {
 function complejidadCiclomatica(texto) {
   var c = 0;
   c += texto.split("if").length - 1;
-  c += texto.split("else").length - 1;
+  // c += texto.split("else").length - 1;
   c += texto.split("for").length - 1;
   c += texto.split("while").length - 1;
   c += texto.split("||").length - 1;
