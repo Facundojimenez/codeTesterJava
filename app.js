@@ -49,6 +49,7 @@ function mostrarMetricas() {
     porcentaje_lineas_comentadas = 0 + "%";
   var complejidad_ciclomatica = complejidadCiclomatica(codigoRaw);
   var fan_in = getFanIn(codigoRaw, "esvalido"); //Cambiar por variable
+  var fan_out = 0; //Cambiar por variable
   var halstead = halsteadMetodo(codigoRaw);
   var longitudHalstead = halstead[0];
   var volumenHalstead = halstead[1];
@@ -63,15 +64,24 @@ function mostrarMetricas() {
   document.getElementById("longitud").value = longitudHalstead;
   document.getElementById("volumen").value = volumenHalstead;
   document.getElementById("fan_in").value = fan_in;
+  document.getElementById("fan_out").value = fan_out;
+  
+  if (complejidad_ciclomatica >= 10)
+    alert("La complejidad ciclomática es alta: Se recomienda modularizar el programa");
+  if((lineas_comentarios_simples) / (lineas_del_archivo + 1) < 0.10)
+    alert("El porcentaje de comentarios en menor al 10%: Se recomienda mejorar la documentación");
+  
+  
+  console.log(complejidad_ciclomatica)
+  console.log((lineas_comentarios_simples + 1) / (lineas_del_archivo + 1))
+
+
+
+  document.getElementById("methods_names").innerHTML = "";
   loadSelect(document.getElementById("methods_names"),getMethodsNames(codigoRaw));
   getMethods(codigoRaw);
   console.log(getMethodsNames(codigoRaw));
 
-  ///esto me parece malardo
-  // if (complejidad_ciclomatica < 11)
-  //   alert("No es necesario modularizar el codigo");
-  // else
-  //  alert("Se recomienda modularizar el programa");
 }
 
 function loadSelect(select, options) {
