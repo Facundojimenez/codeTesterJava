@@ -118,7 +118,7 @@ function complejidadCiclomatica(texto) {
   c += texto.split("while").length - 1;
   c += texto.split("||").length - 1;
   c += texto.split("&&").length - 1;
-  return c + 1;
+  return c;
 }
 
 function halsteadMetodo(texto) {
